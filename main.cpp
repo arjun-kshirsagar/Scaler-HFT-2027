@@ -1,5 +1,6 @@
 #include "order_book.h"
 #include <iostream>
+#include <iomanip>
 #include <chrono>
 #include <cassert>
 
@@ -220,7 +221,8 @@ void test_performance() {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << "Added " << num_orders << " orders in " << duration.count() << " µs" << std::endl;
-    std::cout << "Average: " << duration.count() / num_orders << " µs per order" << std::endl;
+    std::cout << "Average: " << std::fixed << std::setprecision(3) 
+              << static_cast<double>(duration.count()) / num_orders << " µs per order" << std::endl;
     
     // Test cancel performance
     start = std::chrono::high_resolution_clock::now();
@@ -230,7 +232,8 @@ void test_performance() {
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << "Canceled " << num_orders / 2 << " orders in " << duration.count() << " µs" << std::endl;
-    std::cout << "Average: " << duration.count() / (num_orders / 2) << " µs per cancel" << std::endl;
+    std::cout << "Average: " << std::fixed << std::setprecision(3)
+              << static_cast<double>(duration.count()) / (num_orders / 2) << " µs per cancel" << std::endl;
     
     // Test snapshot performance
     start = std::chrono::high_resolution_clock::now();
@@ -241,7 +244,8 @@ void test_performance() {
     end = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << "1000 snapshots in " << duration.count() << " µs" << std::endl;
-    std::cout << "Average: " << duration.count() / 1000 << " µs per snapshot" << std::endl;
+    std::cout << "Average: " << std::fixed << std::setprecision(3)
+              << static_cast<double>(duration.count()) / 1000 << " µs per snapshot" << std::endl;
     
     std::cout << "✓ Performance test completed" << std::endl;
 }
