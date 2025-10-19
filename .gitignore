@@ -20,3 +20,4 @@ Makefile.cmake
 # OS
 .DS_Store
 Thumbs.db
+_codeql_*
