@@ -17,13 +17,10 @@ void OrderBook::add_order(const Order& order) {
     }
     
     // Add the order to the FIFO queue at this price level
-    OrderNode node;
-    node.order = order;
-    price_level->orders.push_back(node);
+    price_level->orders.push_back(order);
     
     // Get iterator to the newly added order
     auto list_iter = std::prev(price_level->orders.end());
-    list_iter->list_iter = list_iter; // Self-reference for quick access
     
     // Update total quantity
     price_level->total_quantity += order.quantity;
@@ -46,7 +43,7 @@ bool OrderBook::cancel_order(uint64_t order_id) {
     const OrderLocation& location = lookup_it->second;
     
     // Get the order from the list
-    const Order& order = location.list_iter->order;
+    const Order& order = *location.list_iter;
     
     if (location.is_buy) {
         // Handle bids
@@ -102,7 +99,7 @@ bool OrderBook::amend_order(uint64_t order_id, double new_price, uint64_t new_qu
     }
     
     const OrderLocation& location = lookup_it->second;
-    Order& order = location.list_iter->order;
+    Order& order = *location.list_iter;
     
     // Check if price is changing
     if (order.price != new_price) {

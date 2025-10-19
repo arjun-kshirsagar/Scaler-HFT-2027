@@ -22,11 +22,8 @@ struct PriceLevel {
     uint64_t total_quantity;
 };
 
-// Forward declaration for internal use
-struct OrderNode {
-    Order order;
-    std::list<OrderNode>::iterator list_iter;
-};
+// Type alias for order list
+using OrderList = std::list<Order>;
 
 class OrderBook {
 public:
@@ -52,7 +49,7 @@ private:
     // Internal structure to maintain orders at each price level
     struct PriceLevelData {
         double price;
-        std::list<OrderNode> orders; // FIFO queue of orders at this price
+        OrderList orders; // FIFO queue of orders at this price
         uint64_t total_quantity = 0;
     };
 
@@ -66,7 +63,7 @@ private:
     struct OrderLocation {
         bool is_buy;
         double price;
-        std::list<OrderNode>::iterator list_iter;
+        OrderList::iterator list_iter;
     };
     
     std::unordered_map<uint64_t, OrderLocation> order_lookup_;
